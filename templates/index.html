@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Script Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #0f172a;
+            color: white;
+            margin: 0;
+        }
+
+        header {
+            background: #020617;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #38bdf8;
+        }
+
+        .pro-btn {
+            background: #facc15;
+            color: black;
+            padding: 8px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        select, button {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            border-radius: 6px;
+            border: none;
+        }
+
+        button {
+            background: #38bdf8;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0ea5e9;
+        }
+
+        .box {
+            background: #1e293b;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            white-space: pre-wrap;
+        }
+
+        .copy-btn, .pdf-btn {
+            background: #22c55e;
+            margin-top: 10px;
+        }
+
+        .pdf-btn {
+            background: #f43f5e;
+        }
+
+        .status {
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">⚡ Script AI</div>
+
+    <div class="status">
+        {% if is_pro %}
+            🔥 PRO USER
+        {% else %}
+            🆓 FREE USER |
+            <a href="/upgrade" class="pro-btn">Upgrade to Pro</a>
+        {% endif %}
+    </div>
+</header>
+
+<div class="container">
+
+    <h2>Select Topic</h2>
+
+    <form method="POST" action="/generate">
+        <select name="topic">
+            <option value="Motivational">🔥 Motivational</option>
+            <option value="Fitness">💪 Fitness</option>
+
+        </select>
+
+        <button type="submit">Generate Script</button>
+    </form>
+
+    {% if script %}
+        <div class="box" id="scriptBox">
+{{ script }}
+        </div>
+
+        <button class="copy-btn" onclick="copyScript()">Copy Script</button>
+
+        <form method="POST" action="/export_pdf">
+            <input type="hidden" name="script" value="{{ script }}">
+            <button class="pdf-btn">Export to PDF</button>
+        </form>
+    {% endif %}
+
+</div>
+
+<script>
+function copyScript() {
+    let text = document.getElementById("scriptBox").innerText;
+    navigator.clipboard.writeText(text);
+    alert("Copied!");
+}
+</script>
+
+</body>
+</html>
